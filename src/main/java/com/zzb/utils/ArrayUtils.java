@@ -22,6 +22,13 @@ public class ArrayUtils<T> implements List<T>,Serializable {
     public int size() {
         return size;
     }
+    /**
+     * 数组下标越界
+     */
+    private void rangeCheck(int index) {
+        if (index >= size)
+            throw new IndexOutOfBoundsException("数组下标越界，越界下标："+index);
+    }
 
     @Override
     public boolean isEmpty() {
@@ -130,6 +137,7 @@ public class ArrayUtils<T> implements List<T>,Serializable {
      * @param index 数组下标
      */
     private void fastRemove(int index) {
+        rangeCheck(index);//检查数组下标是否越界
         //如果一个数组为[1,3,5,9,13]要删除元素3（下标为1），则需要将所有元素3后面的元素都往前移动一个位置，
         // 那么需要拷贝的元素就是元素3后面的所有元素，需要拷贝的元素个数为：数组大小5 - 数组下标1 - 1 = 3
         int numMoved = size - index - 1;
