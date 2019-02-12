@@ -1,6 +1,5 @@
 package com.zzb.utils;
 
-import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -9,27 +8,55 @@ import java.util.*;
  * @Description 模拟arrayList的实现
  *
  */
-public class ArrayUtils<T> implements List<T>,Serializable {
+public  class ArrayUtils<T> extends AbstractList<T>
+        implements List<T> {
     //数组长度
     private int size;
     //数组容量
-    private int capacity;
+    private int capacity = 10;
+    //数组扩容系数
     private static final double resizeCoefficient = 1F;
-    //初始化一个空的数组arr
-    private Object[] arr;
+    //声明的数组为一个全局变量
+    transient   Object[] arr ;
+    //默认容量为空的数组
+    private static final Object[] DEFAULT_CAPACITY_EMPTY = {};
 
+    /**
+     * 重写构造函数，初始化数组
+     */
+    public ArrayUtils(int initialCapacity){
+        if (initialCapacity > 0) {
+            this.arr = new Object[initialCapacity];
+        } else if (initialCapacity == 0) {
+            this.arr = DEFAULT_CAPACITY_EMPTY;
+        } else {
+            throw new IllegalArgumentException("Illegal Capacity: "+
+                    initialCapacity);
+        }
+    }
+    public ArrayUtils(){//无参构造函数,默认容量为10
+        this.arr = DEFAULT_CAPACITY_EMPTY;
+    }
+    /**
+     * 获得数组长度
+     * @return 数组长度
+     */
     @Override
     public int size() {
         return size;
     }
     /**
-     * 数组下标越界
+     * 数组下标越界检查
      */
     private void rangeCheck(int index) {
         if (index >= size)
             throw new IndexOutOfBoundsException("数组下标越界，越界下标："+index);
     }
 
+    /**
+     * 判断数组是否为空数组
+     * @return
+     */
     @Override
     public boolean isEmpty() {
         //官方写法就一句话 ：return size == 0;
@@ -37,7 +64,6 @@ public class ArrayUtils<T> implements List<T>,Serializable {
             return true;
         }
         return false;
-
     }
 
     /**
@@ -81,7 +107,7 @@ public class ArrayUtils<T> implements List<T>,Serializable {
 
     @Override
     public Object[] toArray() {
-        return new Object[0];
+        return Arrays.copyOf(arr, size);
     }
 
     /**
@@ -91,15 +117,21 @@ public class ArrayUtils<T> implements List<T>,Serializable {
      */
     @Override
     public boolean add(T t) {
-        return false;
+        //先判断数组是否满了（即开辟的数组空间是否还可以继续存放元素）
+        if(size>=arr.length){//如果满了，则扩容
+            resize();
+        }
+        //在数组末尾添加元素t
+        arr[size++] = t;
+        return true;
     }
 
     /**
-     *
+     * 判断是否需要扩容
      */
-    public boolean shouldResize(){
+    public boolean shouldResize(int resize){
         //如果数组长度大于容量*扩容系数，则进行扩容
-        if(size>resizeCoefficient*capacity){
+        if(resize>resizeCoefficient*capacity){
             return true;
         }else {
             return false;
@@ -109,11 +141,20 @@ public class ArrayUtils<T> implements List<T>,Serializable {
     //对数组进行扩容，容量为原数组容量的两倍
     public void resize(){
         //1.声明一个是原来数组两倍的新数组
-        T[] newArr = (T[]) new Object[capacity>>1];
+       /* T[] newArr = (T[]) new Object[capacity<<1];
         //2.将旧数组中的元素拷贝到新数组中（深拷贝）
         System.arraycopy(arr, 0, newArr, 0, capacity);
+
         //3.将原数组覆盖
-        arr = newArr;
+        arr = newArr;*/
+
+        int oldCapacity = arr.length;
+        int newCapacity = oldCapacity + (oldCapacity >> 1);
+        if(newCapacity<=0){
+            newCapacity = 10;
+        }
+        // minCapacity is usually close to size, so this is a win:
+        arr = Arrays.copyOf(arr, newCapacity);
     }
 
     /**
@@ -189,7 +230,7 @@ public class ArrayUtils<T> implements List<T>,Serializable {
 
     @Override
     public T get(int index) {
-        return null;
+        return (T)arr[index];
     }
 
     @Override
@@ -202,9 +243,17 @@ public class ArrayUtils<T> implements List<T>,Serializable {
 
     }
 
+    /**
+     * 根据数组元素下标删除指定的元素
+     * @param index
+     * @return 被删除的元素
+     */
     @Override
     public T remove(int index) {
-        return null;
+
+        fastRemove(index);
+        return (T)arr[index];
+
     }
 
     @Override
@@ -250,5 +299,31 @@ public class ArrayUtils<T> implements List<T>,Serializable {
     @Override
     public Object[] toArray(Object[] a) {
         return new Object[0];
+    }
+
+    /**
+     * 将数组转为字符串
+     * @return
+     */
+    public  static String arrayToString(Object[] a){
+        StringBuilder sb = new StringBuilder();
+        if(a==null||a.length==0){
+            return "[]";
+        }
+        sb.append("[");
+        for(int i = 0; i < a.length;i++){
+            sb.append(a[i]);
+        }
+        String s = sb.append("]").toString();
+        return  s;
+    }
+
+    @SuppressWarnings("unchecked")
+    T arr(int index) {
+        return (T) arr[index];
+    }
+
+    public static void main(String[] args) { // main 方法本身放入方法区。
+        ArrayUtils test1 = new ArrayUtils(); // test1是引用，所以放到栈区里，new Sample(" 测试1 ")放入到堆区
     }
 }
