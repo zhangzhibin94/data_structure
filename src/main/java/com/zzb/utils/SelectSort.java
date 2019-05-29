@@ -1,6 +1,6 @@
 package com.zzb.utils;
 
-import java.util.Arrays;
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * Created by zzb on 2019/2/11.
@@ -29,10 +29,22 @@ public class SelectSort {
     }
 
     public static void main(String[] args) {
-        SelectSort selectSort = new SelectSort();
-        selectSort.sort(selectSortArray);
-        System.out.println(Arrays.toString(selectSortArray));
-        System.out.println(950+430);
+        String testString = "{\n" +
+                "\"ResponseStatusListObject\": {\n" +
+                "\"ResponseStatusObject\": [{\n" +
+                "\"Id\":\n" +
+                "\"32050800001327000001022019012313191005274\",\n" +
+                "\"StatusCode\": 0,\n" +
+                "\"RequestURL\": \"/VIID/ SubscribeNotifications \",\n" +
+                "\"StatusString\": \"OK\",\n" +
+                "\"LocalTime\": \"20180116141531\"\n" +
+                "}]\n" +
+                "}\n" +
+                "}\n";
+//log.info("接入耐司捷视图库返回消息 = {}", result);
+        Object obj = JSONObject.parseObject(testString, Object.class);
+
+        System.out.println();
     }
 
 }
