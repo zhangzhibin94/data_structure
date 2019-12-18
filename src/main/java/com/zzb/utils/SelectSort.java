@@ -1,5 +1,7 @@
 package com.zzb.utils;
 
+
+
 import java.util.Arrays;
 
 /**
@@ -69,25 +71,11 @@ public class SelectSort {
             }
 
             arr[j] = target;
-            System.out.println("第"+i+"次排序结果："+Arrays.toString(arr));
+            System.out.println("第"+i+"次排序结果："+ Arrays.toString(arr));
         }
     }
     public static void main(String[] args) {
-        long a = 123L;
-        double b = 0.123d;
-        SelectSort selectSort = new SelectSort();
-        //生成一个长度为15的随机数 数组
-        Integer[] selectSortArray = new Integer[1000];
-        for(int i=0;i<selectSortArray.length;i++){
-            int i1 = (int) (Math.random() * 10000);
-            selectSortArray[i] = i1;
-        }
-        System.out.println("原数组"+Arrays.toString(selectSortArray));
-        long startTime = System.currentTimeMillis();
-        selectSort.inserSort2(selectSortArray);
-        long endTime = System.currentTimeMillis();
-        System.out.println(endTime-startTime);
-        System.out.println("排序后数组："+Arrays.toString(selectSortArray));
+
     }
     //选择排序，遍历出最小的数放到最右边
     public static void  selectSort(Integer[] arr){

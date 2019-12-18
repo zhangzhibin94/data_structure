@@ -60,10 +60,7 @@ public  class ArrayUtils<T> extends AbstractList<T>
     @Override
     public boolean isEmpty() {
         //官方写法就一句话 ：return size == 0;
-        if(size==0){
-            return true;
-        }
-        return false;
+        return size == 0;
     }
 
     /**
@@ -131,11 +128,7 @@ public  class ArrayUtils<T> extends AbstractList<T>
      */
     public boolean shouldResize(int resize){
         //如果数组长度大于容量*扩容系数，则进行扩容
-        if(resize>resizeCoefficient*capacity){
-            return true;
-        }else {
-            return false;
-        }
+        return resize > resizeCoefficient * capacity;
 
     }
     //对数组进行扩容，容量为原数组容量的两倍
