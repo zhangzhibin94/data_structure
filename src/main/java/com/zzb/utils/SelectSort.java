@@ -108,14 +108,14 @@ public class SelectSort {
     }
     //插入排序
     public static void inserSort2(Integer[] arr){
-        for(int i = 0;i<arr.length;i++){
-            int temp = arr[i];//用于记录当前的无序列表中的第一个元素
-            int in = i;//temp指针用于指向无序列表中的数需要插入的位置
-            while(in>0&&temp<arr[in-1]){//遍历有序列表，将无序列表中的数插入到对应的位置
-                arr[in] = arr[in-1];
-                in--;
+        for(int i = 1; i<arr.length; i++){
+            int j = i;
+            int temp = arr[i];
+            while (j>0&&temp<arr[j-1]){
+                arr[j] = arr[j-1];
+                j--;
             }
-            arr[in] = temp;
+            arr[j] = temp;
         }
     }
 }

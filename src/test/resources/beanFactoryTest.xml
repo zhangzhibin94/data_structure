@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <bean id="testBean" name="testBean" class="TestBean" lazy-init="false">
+    </bean>
+    <aop:config>
+        <aop:aspect ref="testBean">
+            <aop:pointcut expression="execution(* com.zzb.dataStructure..*(..))" id="testPointCut"/>
+            <aop:before method="say" pointcut-ref="testPointCut"/>
+            <aop:after method="sayAfter" pointcut-ref="testPointCut"/>
+        </aop:aspect>
+    </aop:config>
+</beans>
