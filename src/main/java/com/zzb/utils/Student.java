@@ -1,9 +1,13 @@
 package com.zzb.utils;
 
+import org.msgpack.annotation.Message;
+
 /**
  * @Author by 张志斌 .
  * @Date 14:20 2019/3/15
+ * Message 表示需要进行msgPack进行序列化
  */
+@Message
 public class Student {
     private String name;
     private String description;
